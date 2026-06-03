@@ -1,0 +1,321 @@
+/* Variables */
+:root {
+    --primary: #0F172A;
+    --muted: #475569;
+    --accent-1: #2563EB;
+    --accent-2: #0EA5E9;
+    --accent-3: #1D4ED8;
+    --bg: #E2E8F0;
+    --card: #F8FAFC;
+    --white: #ffffff;
+}
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg);
+    color: var(--primary);
+}
+
+html,
+body {
+    height: 100%;
+}
+
+/* Contenedor */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* ===================
+   HEADER
+   =================== */
+.header {
+    text-align: center;
+    padding: 40px 0;
+    background: linear-gradient(135deg, var(--primary), var(--accent-1));
+    color: var(--white);
+}
+
+.titulo {
+    font-size: 2.5rem;
+}
+
+.subtitulo {
+    opacity: 0.9;
+}
+
+/* ===================
+   HERO
+   =================== */
+.hero {
+    text-align: center;
+    padding: 40px 0;
+    background: var(--white);
+}
+
+.hero h2 {
+    margin-bottom: 10px;
+}
+
+.hero p {
+    color: var(--gray);
+}
+
+/* ===================
+   MAIN
+   =================== */
+.main {
+    padding: 40px 0;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* ===================
+   GALERÍA y TARJETAS (mejoradas)
+   =================== */
+.galeria.grid {
+    display: block;
+}
+
+.proyecto-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--card, #ffffff);
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 8px 20px rgba(16, 24, 40, 0.06);
+    transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+    border: 1px solid rgba(99, 102, 241, 0.06);
+    position: relative;
+    height: 300px;
+}
+
+.proyecto-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 22px 50px rgba(16, 24, 40, 0.12);
+    border-color: rgba(124, 58, 237, 0.12);
+}
+
+.thumb {
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+/* Gradientes/colores para miniaturas */
+
+/* Gradientes/colores para miniaturas */
+.proyecto-1 {
+    background: linear-gradient(135deg, #0F172A 0%, var(--accent-1) 100%);
+}
+
+.proyecto-2 {
+    background: linear-gradient(135deg, #1E293B 0%, #2563EB 100%);
+}
+
+.proyecto-3 {
+    background: linear-gradient(135deg, #334155 0%, #0EA5E9 100%);
+}
+
+.proyecto-4 {
+    background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%);
+}
+
+.proyecto-5 {
+    background: linear-gradient(135deg, #0F172A 0%, #1E40AF 100%);
+}
+
+.numero-proyecto {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 6px 10px;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+
+.proyecto-info {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1 0 auto;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* Make anchors fully tappable and remove highlight on mobile */
+.proyecto-card {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/* Prevent horizontal overflow */
+.galeria {
+    overflow-x: hidden;
+}
+
+/* Desktop: keep fixed card heights; mobile: allow cards to grow */
+@media (max-width: 900px) {
+    .proyecto-card {
+        height: auto;
+    }
+
+    .fila-arriba,
+    .fila-abajo {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .fila-arriba .proyecto-card,
+    .fila-abajo .proyecto-card {
+        flex: 0 0 48%;
+        width: 48%;
+        height: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .titulo {
+        font-size: 1.6rem;
+    }
+
+    .section-title {
+        font-size: 1.05rem;
+    }
+
+    .proyecto-card {
+        height: auto;
+    }
+
+    .fila-arriba,
+    .fila-abajo {
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .fila-arriba .proyecto-card,
+    .fila-abajo .proyecto-card {
+        flex: 0 0 100%;
+        width: 100%;
+    }
+
+    .container {
+        width: 94%;
+    }
+
+    .thumb {
+        height: 120px;
+    }
+}
+
+.proyecto-info h3 {
+    margin: 0;
+    font-size: 1.15rem;
+}
+
+.proyecto-info p {
+    color: var(--gray);
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.etiqueta {
+    display: inline-block;
+    background: rgba(15, 23, 42, 0.04);
+    color: var(--muted);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+/* ===================
+   FOOTER
+   =================== */
+.footer {
+    text-align: center;
+    padding: 30px;
+    background: var(--primary);
+    color: var(--white);
+    margin-top: 40px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 540px) {
+    .thumb {
+        height: 140px;
+        font-size: 2.2rem;
+    }
+
+    .proyecto-info {
+        padding: 14px;
+    }
+}
+
+.fila-arriba,
+.fila-abajo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.fila-abajo {
+    margin-top: 18px;
+}
+
+.fila-arriba .proyecto-card,
+.fila-abajo .proyecto-card {
+    flex: 0 0 340px;
+    width: 340px;
+    height: 320px;
+}
+
+@media (max-width: 900px) {
+
+    .fila-arriba .proyecto-card,
+    .fila-abajo .proyecto-card {
+        flex: 0 0 48%;
+        width: 48%;
+        height: auto;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .fila-arriba,
+    .fila-abajo {
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .fila-arriba .proyecto-card,
+    .fila-abajo .proyecto-card {
+        flex: 0 0 100%;
+        width: 100%;
+    }
+}
