@@ -10,18 +10,21 @@
     --white: #ffffff;
 }
 
-/* Reset */
+
+
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Body */
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: var(--bg);
     color: var(--primary);
+
 }
 
 html,
@@ -36,9 +39,6 @@ body {
     margin: auto;
 }
 
-/* ===================
-   HEADER
-   =================== */
 .header {
     text-align: center;
     padding: 40px 0;
@@ -54,9 +54,7 @@ body {
     opacity: 0.9;
 }
 
-/* ===================
-   HERO
-   =================== */
+
 .hero {
     text-align: center;
     padding: 40px 0;
@@ -71,9 +69,7 @@ body {
     color: var(--gray);
 }
 
-/* ===================
-   MAIN
-   =================== */
+
 .main {
     padding: 40px 0;
 }
@@ -83,9 +79,7 @@ body {
     margin-bottom: 30px;
 }
 
-/* ===================
-   GALERÍA y TARJETAS (mejoradas)
-   =================== */
+
 .galeria.grid {
     display: block;
 }
@@ -119,9 +113,7 @@ body {
     color: rgba(255, 255, 255, 0.95);
 }
 
-/* Gradientes/colores para miniaturas */
 
-/* Gradientes/colores para miniaturas */
 .proyecto-1 {
     background: linear-gradient(135deg, #0F172A 0%, var(--accent-1) 100%);
 }
