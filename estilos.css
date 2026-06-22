@@ -133,7 +133,9 @@ body {
 .proyecto-5 {
     background: linear-gradient(135deg, #0F172A 0%, #1E40AF 100%);
 }
-
+.proyecto-6 {
+    background: linear-gradient(135deg, #0F172A 0%, #1E40AF 100%);
+}
 .numero-proyecto {
     position: absolute;
     top: 12px;
