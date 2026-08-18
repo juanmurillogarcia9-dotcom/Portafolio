@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Usuarios</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e1e1ea;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #121212;
+            font-size: bold;
+            font-style: italic;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #eeeeee;
+        }
+
+        .card {
+            background: #faf7f7;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-align: center;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            margin: 10px 0 5px 0;
+            color: #151516;
+            font-style: italic;
+        }
+
+        .card p {
+            margin: 5px 0;
+            color: #3f3c3b;
+        }
+
+        .star {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            font-size: 20px;
+            color: rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .star.active {
+            color: #ffb400;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+        }
+
+        #favoritos-container {
+            display: inline-block;
+            vertical-align: middle
+        }
+
+        /* Estilos para panel de favoritos */
+        .fav-panel {
+            background: #fff;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .08);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .fav-list {
+            display: flex;
+            gap: 8px;
+            align-items: center
+        }
+
+        .fav-item {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            padding: 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid #eee;
+            background: #fafafa
+        }
+
+        .fav-item img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Directorio de Usuarios</h1>
+
+
+    <div id="usuarios-container" class="container"></div>
+
+    <script>
+        const urlAPI = "https://randomuser.me/api/?results=100"; // Pedimos los 100 usuarios
+
+        async function cargarUsuarios() {
+            try {
+                const respuesta = await fetch(urlAPI);
+                const datos = await respuesta.json();
+                const usuarios = datos.results;
+
+                const contenedor = document.getElementById("usuarios-container");
+                contenedor.innerHTML = "";
+
+                usuarios.forEach(usuario => {
+                    // Creamos la card
+                    const card = document.createElement("div");
+                    card.classList.add("card");
+
+                    // Revisar si está en favoritos (para marcar la estrella al cargar)
+                    const favoritosInit = JSON.parse(localStorage.getItem('favoritos') || '[]');
+                    const esFavorito = favoritosInit.some(f => f.login.uuid === usuario.login.uuid);
+
+                    // Contenido con estrella
+                    card.innerHTML = `
+                        <div style="position:relative;">
+                            <span class="star ${esFavorito ? 'active' : ''}" title="Favorito">★</span>
+                            <img src="${usuario.picture.medium}" alt="Foto de ${usuario.name.first}">
+                        </div>
+                        <h3>${usuario.name.title} ${usuario.name.first} ${usuario.name.last}</h3>
+                        <p><strong>Edad:</strong> ${usuario.dob.age} años</p>
+                        <p><strong>Género:</strong> ${usuario.gender}</p>
+                    `;
+
+                    // Click en la tarjeta -> abrir detalle
+                    card.addEventListener("click", () => {
+                        localStorage.setItem("usuarioSeleccionado", JSON.stringify(usuario));
+                        window.location.href = "detalle.html";
+                    });
+
+                    // Click en la estrella -> toggle favorito (guardar en localStorage y actualizar lista)
+                    const star = card.querySelector('.star');
+                    if (esFavorito) star.classList.add('active');
+                    star.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        let favs = JSON.parse(localStorage.getItem('favoritos') || '[]');
+                        const idx = favs.findIndex(f => f.login.uuid === usuario.login.uuid);
+                        if (idx === -1) {
+                            // agregar (guardar sólo los campos necesarios para evitar mutaciones inesperadas)
+                            const favObj = {
+                                login: usuario.login,
+                                name: usuario.name,
+                                picture: usuario.picture,
+                                dob: usuario.dob,
+                                gender: usuario.gender,
+                                email: usuario.email,
+                                phone: usuario.phone,
+                                cell: usuario.cell,
+                                location: usuario.location
+                            };
+                            favs.push(favObj);
+                            star.classList.add('active');
+                            // guardar y redirigir a la página de favoritos
+                            localStorage.setItem('favoritos', JSON.stringify(favs));
+                            window.location.href = 'favoritos.html';
+                            return;
+                        } else {
+                            // quitar
+                            favs.splice(idx, 1);
+                            star.classList.remove('active');
+                        }
+                        localStorage.setItem('favoritos', JSON.stringify(favs));
+                    });
+
+                    contenedor.appendChild(card);
+                });
+            } catch (error) {
+                console.error("Error al consumir la API:", error);
+            }
+        }
+
+        // (Removed inline favorites rendering; use favoritos.html to list selections)
+
+        // El botón 'Ver favoritos' fue eliminado: la estrella redirige directamente.
+
+        cargarUsuarios();
+    </script>
+</body>
+
+</html>

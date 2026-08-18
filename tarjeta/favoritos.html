@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Favoritos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f9;
+            margin: 0;
+            padding: 20px
+        }
+
+        h1 {
+            text-align: center;
+            color: #333
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 18px;
+            max-width: 1100px;
+            margin: 20px auto
+        }
+
+        .card {
+            background: #fff;
+            padding: 18px;
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, .08);
+            text-align: center
+        }
+
+        .card img {
+            width: 120px;
+            height: 120px;
+            border-radius: 10px;
+            object-fit: cover
+        }
+
+        .card h3 {
+            margin: 10px 0 6px 0;
+            color: #007BFF
+        }
+
+        .card p {
+            color: #666;
+            margin: 0
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 10px
+        }
+
+        .btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer
+        }
+
+        .btn-back {
+            background: #007BFF;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            margin: 12px auto
+        }
+
+        .btn-del {
+            background: #ff4d4f;
+            color: #fff
+        }
+
+        .empty {
+            text-align: center;
+            margin-top: 40px;
+            color: #666
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="titulo">Tus Favoritos (0)</h1>
+    <div id="container" class="container"></div>
+    <div style="text-align:center">
+        <button id="btn-back" class="btn btn-back">Volver al listado</button>
+    </div>
+
+    <script>
+        function cargarFavoritos() {
+            const cont = document.getElementById('container');
+            const favs = JSON.parse(localStorage.getItem('favoritos') || '[]');
+            cont.innerHTML = '';
+            const titulo = document.getElementById('titulo');
+            const total = favs ? favs.length : 0;
+            titulo.textContent = `Tus Favoritos (${total})`;
+            if (!favs || favs.length === 0) {
+                cont.innerHTML = '<p class="empty">No has seleccionado favoritos todavía.</p>';
+                return;
+            }
+
+            favs.forEach((u, idx) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                const fullName = `${u.name.title ? u.name.title + ' ' : ''}${u.name.first} ${u.name.last}`;
+                card.innerHTML = `
+                    <img src="${u.picture.large || u.picture.medium}" alt="${fullName}">
+                    <h3>${fullName}</h3>
+                `;
+
+                const actions = document.createElement('div');
+                actions.className = 'actions';
+
+                const btnView = document.createElement('button');
+                btnView.className = 'btn';
+                btnView.textContent = 'Ver detalle';
+                btnView.addEventListener('click', () => {
+                    localStorage.setItem('usuarioSeleccionado', JSON.stringify(u));
+                    // indicar que venimos desde la lista de favoritos
+                    window.location.href = 'detalle.html?from=favoritos';
+                });
+
+                const btnDel = document.createElement('button');
+                btnDel.className = 'btn btn-del';
+                btnDel.textContent = 'Eliminar';
+                btnDel.addEventListener('click', () => {
+                    let current = JSON.parse(localStorage.getItem('favoritos') || '[]');
+                    current.splice(idx, 1);
+                    localStorage.setItem('favoritos', JSON.stringify(current));
+                    cargarFavoritos();
+                });
+
+                actions.appendChild(btnView);
+                actions.appendChild(btnDel);
+                card.appendChild(actions);
+                cont.appendChild(card);
+            });
+        }
+
+        cargarFavoritos();
+
+        // Volver al listado
+        document.getElementById('btn-back').addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+
+</html>
